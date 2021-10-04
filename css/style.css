@@ -1,0 +1,32 @@
+.cell {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 1.5em;
+    background-color: gray;
+
+}
+
+.mine {
+    background-color: red;
+}
+
+.clicked {
+    background-color: rgb(186, 196, 206);
+}
+
+.board-container{
+    /* position: absolute; */
+    /* /* margin: auto; */
+    text-align: center;
+}
+
+.boardGame {
+    /* position: absolute; */
+    margin: auto;
+text-align: center;
+}
+
+
+
+/* .marked {} */
