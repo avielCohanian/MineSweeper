@@ -78,3 +78,5 @@ function renderCell(i, j, value) {
     var elCell = document.querySelector(`.cell${i}-${j}`);
     elCell.innerHTML = value;
 }
+
+
