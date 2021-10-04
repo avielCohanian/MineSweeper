@@ -24,6 +24,9 @@ var gGame = {
 function init() {
     gBoard = []
     buildBoard()
+     gGame.shownCount = 0
+    gGame.markedCount = 0
+    gGame.secsPassed = 0
 }
 
 
@@ -82,9 +85,8 @@ function setMinesNegsCount() {
 
 function cellClicked(elBtn, i, j) {
     
-    if ((!gGame.isOn)&&(gGame.shownCount)) return
+    if (!gGame.isOn) return
     if (!gGame.shownCount) {
-        // gGame.isOn = true
         gTime = Date.now()
         gInterval = setInterval(stoper, 10);
         expandShown(elBtn, i, j)
@@ -153,10 +155,6 @@ function cellMarked(elBtn, i, j) {
 
 function endGame() {
     clearInterval(gInterval)
-    gGame.isOn = false
-    gGame.shownCount = 0
-    gGame.markedCount = 0
-    gGame.secsPassed = 0
     console.log('end game');
 }
 
@@ -164,6 +162,7 @@ function endGame() {
 function changeSize(size, mines) {
     gLevel.size = size
     gLevel.mines = mines
+    gGame.isOn = true
     endGame()
     init()
 }
