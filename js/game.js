@@ -59,7 +59,7 @@ function creatBoom() {
         var emptyCells = getEmptyCells()
         var boomCell = getRandomInt(0, emptyCells.length - 1)
         var cellIdx = emptyCells[boomCell]
-        console.log(cellIdx);
+        // console.log(cellIdx);
         gBoard[cellIdx.i][cellIdx.j].minesAroundCount = BOOM
         gBoard[cellIdx.i][cellIdx.j].isMine = true
         gIdxBooms.push(cellIdx)
