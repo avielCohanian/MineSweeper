@@ -1,12 +1,27 @@
 'use strict'
 
 
-
+function buildBoard() {
+    var mat = []
+    for (var i = 0; i < gLevel.size; i++) {
+        mat[i] = []
+        for (var j = 0; j < gLevel.size; j++) {
+            mat[i][j] = {
+                minesAroundCount: '',
+                isShown: false,
+                isMine: false,
+                isMarked: false
+            }
+        }
+    }
+    gBoard = mat
+    renderBoard(gBoard, '.board-container')
+}
 
 
 function renderBoard(mat, selector) {
     //המספר זה עובי דפנות התא
-    var strHTML = '<table class="boardGame" border="1"><tbody>';
+    var strHTML = '<table class="boardGame" border="1"  cellpadding="3"><tbody>';
     for (var i = 0; i < mat.length; i++) {
         strHTML += '<tr>';
         for (var j = 0; j < mat[0].length; j++) {
@@ -17,6 +32,10 @@ function renderBoard(mat, selector) {
             if (cell.isShown) {
                 show = cell.minesAroundCount
                 className += ' clicked'
+            }
+            if (cell.isMine && cell.isMarked){
+                show = cell.minesAroundCount
+                className += ' mine'
             }
             strHTML += `<td oncontextmenu ="cellMarked(this,${i},${j})" onclick="cellClicked(this,${i},${j})" class="${className}">${show}  </td>`
         }
@@ -51,12 +70,11 @@ function countNegsBoom(rowIdx, colIdx) {
 
 
 
-
 function getEmptyCells() {
     var emptyCells = []
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard[0].length; j++) {
-            if ((!gBoard[i][j].minesAroundCount) && (!gBoard[i][j].isShown)) {
+            if ((!gBoard[i][j].isShown) &&  (!gBoard[i][j].isMine)) {
                 emptyCells.push({ i: i, j: j })
             }
         }
@@ -78,5 +96,4 @@ function renderCell(i, j, value) {
     var elCell = document.querySelector(`.cell${i}-${j}`);
     elCell.innerHTML = value;
 }
-
 

@@ -9,24 +9,39 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body onload="init()"  >
-    
-<div class="btn-level">
-    <button onclick="changeSize(4,2)">4X4</button>
-    <button onclick="changeSize(8,12)">8X8</button>
-    <button onclick="changeSize(12,30)">12X12</button>
-    <!-- <span> 00:00</span> -->
-    <p>00:00</p>
-</div>
-<div class="board-container"  oncontextmenu="return false;">
-    
-    
-</div>
+<body onload="init()">
+    <div class="title">
+        <p class="message">Mine Sweeper</p>
+    </div>
 
-<button onclick="endGame()">hellow</button>
+
+    <div class="btn-level">
+        <button onclick="changeSize(4,2)">4X4</button>
+        <button onclick="changeSize(8,12)">8X8</button>
+        <button onclick="changeSize(12,30)">12X12</button>
+        <p>00:00</p>
+        <button onclick="isManuallyCreate = true, gModelManually = true">manually create</button>
+    </div>
+
+    <div class="status-game">
+        <button onclick="endGame()">😜</button>
+    </div>
+
+    <div class="help">
+        <span class="lives"></span>
+        <button onclick="gIsHelpHit = true" class="hint">🔍X3</button>
+        <button onclick="safeClick(this)" class="safe-click">3 Safe Click</button>
+        <!-- <button onclick="backStep()" class="safe-click">Undo</button> -->
+    </div>
+
+
+    <div class="board-container" oncontextmenu="return false;"></div>
+
+    <p class="end-message"></p>
 
     <script src="js/utils.js"></script>
     <script src="js/game.js"></script>
+    <script src="js/features.js"></script>
 </body>
 
 </html>
