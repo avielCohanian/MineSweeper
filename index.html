@@ -10,17 +10,22 @@
 </head>
 
 <body onload="init()">
+    <div class="score"> <span >Best score:</span> <br>  <br> <span class="sec-score"></span>  <span>sec</span></div>
+
+
     <div class="title">
         <p class="message">Mine Sweeper</p>
     </div>
-
-
+    <p class="time">00:00</p>
     <div class="btn-level">
-        <button onclick="changeSize(4,2)">4X4</button>
-        <button onclick="changeSize(8,12)">8X8</button>
-        <button onclick="changeSize(12,30)">12X12</button>
-        <p>00:00</p>
-        <button onclick="isManuallyCreate = true, gModelManually = true">manually create</button>
+        <button class="beginner" onclick="changeSize(4,2)">Beginner <span>4X4</span></button>
+        <button class="medium" onclick="changeSize(8,12)">Medium <span>8X8</span></button>
+        <button class="expert" onclick="changeSize(12,30)">Expert <span>12X12</span></button>
+    </div>
+    <div class="mode">
+        <button class="boomMode" onclick="isBoomMode = true">7 BOOM!</button>
+        <button class="manually-create" onclick="isManuallyCreate = true, gModelManually = true">manually
+            create</button>
     </div>
 
     <div class="status-game">
@@ -31,12 +36,11 @@
         <span class="lives"></span>
         <button onclick="gIsHelpHit = true" class="hint">🔍X3</button>
         <button onclick="safeClick(this)" class="safe-click">3 Safe Click</button>
-        <!-- <button onclick="backStep()" class="safe-click">Undo</button> -->
+        <button onclick="backStep()" class="safe-click">Undo</button>
     </div>
 
 
     <div class="board-container" oncontextmenu="return false;"></div>
-
     <p class="end-message"></p>
 
     <script src="js/utils.js"></script>

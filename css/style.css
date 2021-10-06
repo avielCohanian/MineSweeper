@@ -3,36 +3,36 @@ ul {
 }
 
 .cell {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     text-align: center;
     font-size: 1.5em;
     background-color: gray;
 
 }
 
+table {
+    border-spacing: 2px;
+    border-collapse: initial;
+}
 
 body {
 
-    background-color: black
+    background-color: lightgreen
 }
 
 
 .message {
-    visibility: visible;
-    /* margin-bottom: 5px; */
     text-align: center;
     font-size: x-large;
-    color: lightgreen;
+    color: gray;
 }
-.end-message{
-    /* visibility:hidden; */
-    margin-bottom: 25px;
-    text-align: center;
-    font-size: medium;
-    color: lightgreen;
 
+.time {
+    color: black;
+    text-align: center;
 }
+
 
 .mine {
     background-color: red;
@@ -46,11 +46,24 @@ body {
     text-align: center;
 }
 
+.score {
+    background-color: wheat;
+    position: absolute;
+    width: 100px;
+    height: 80px;
+    left: 100px;
+    text-align: center;
+    border-radius: 10px;
+    padding-top: 20px;
+    margin-top: 10px;
+
+}
+
 .boardGame {
     margin: auto;
     margin-top: 5px;
     text-align: center;
-    background-color: rgba(255, 255, 255, 0.671)
+    /* background-color: rgba(255, 255, 255, 0.671) */
 }
 
 
@@ -62,13 +75,48 @@ button {
 
 .btn-level {
     text-align: center;
-    /* position:initial; */
-    width: 150px;
-    height: 75px;
+    width: 100px;
+    height: 70px;
     margin: auto;
-    padding-top: 10px;
-    background-color: lightpink;
+    padding-top: 5px;
+    /* background-color: lightpink; */
     border-radius: 7px;
+}
+
+.beginner span {
+    font-size: x-small;
+}
+
+.medium {
+    margin-top: 2px;
+
+}
+
+.medium span {
+    font-size: x-small;
+}
+
+.expert {
+    margin-top: 2px;
+
+}
+
+.expert span {
+    font-size: x-small;
+}
+
+.mode {
+    text-align: center;
+    padding-top: 5px;
+}
+
+
+.boomMode {
+    margin-top: 3px;
+}
+
+.manually-create {
+    margin-top: 3px;
 }
 
 .status-game {
@@ -77,38 +125,48 @@ button {
 
 
 .status-game button {
+    background-color: gray;
     margin-bottom: 10px;
-    margin-top: 20px;
+    margin-top: 10px;
+    border-radius: 10px;
+    /* padding: 0px; */
 }
 
 
-.help{
+.help {
     text-align: center;
     /* width: 150px; */
     width: 300px;
     height: 25px;
     padding-top: 5px;
-    background-color: lightpink;
+    /* background-color: lightpink; */
     border-radius: 7px;
     /* margin-left: 180px; */
     /* margin-bottom: 50px; */
     margin: auto;
 }
 
-.lives{
-    position:relative
+.lives {
+    position: relative
 }
 
 
-.safe-click-show{
+.safe-click-show {
     opacity: 1;
 }
 
-.safe-click-close{
+.safe-click-close {
     opacity: 0.3;
 }
 
-.choose-boom{
-
+.choose-boom {
     background-color: lightcoral;
+}
+
+
+.end-message {
+    text-align: center;
+    font-size: medium;
+    color: black;
+
 }

@@ -7,14 +7,14 @@ var gBoard;
 var gInterval
 var gIdxBooms = []
 var gSize
-var gBoardCopy 
+var gBoardCopy
 var gUndo
 
 
 
 var gLevel = {
-    size: 4,
-    mines: 2
+    size: 8,
+    mines: 12
 };
 var gGame = {
     isOn: true,
@@ -28,7 +28,7 @@ var gGame = {
 
 function init() {
     gBoard = []
-    gBoardCopy = [[]]
+    gBoardCopy = {}
     gCountHelpHit = 3
     gLives = 3
     gSize = gLevel.mines
@@ -43,15 +43,14 @@ function init() {
     gIsFlickering = false
     isManuallyCreate = false
     gModelManually = false
+    isBoomMode = false
     buildBoard()
     livesCount()
+    var score = document.querySelector('.sec-score')
+    score.innerText = localStorage.getItem(`${gLevel.size}`)
+    var elMessage = document.querySelector('.end-message');
+    elMessage.innerText = 'Welcome'
 }
-
-
-
-
-
-
 
 function creatBoom() {
     gIdxBooms = []
@@ -59,7 +58,6 @@ function creatBoom() {
         var emptyCells = getEmptyCells()
         var boomCell = getRandomInt(0, emptyCells.length - 1)
         var cellIdx = emptyCells[boomCell]
-        // console.log(cellIdx);
         gBoard[cellIdx.i][cellIdx.j].minesAroundCount = BOOM
         gBoard[cellIdx.i][cellIdx.j].isMine = true
         gIdxBooms.push(cellIdx)
@@ -114,14 +112,27 @@ function cellClicked(elBtn, i, j) {
         return
     }
     if (!gGame.shownCount) {
+        var elMessage = document.querySelector('.end-message');
+        elMessage.innerText = ''
         if (!gGame.markedCount) {
             expandShown(elBtn, i, j)
             renderBoard(gBoard, '.board-container')
             gTime = Date.now()
             gInterval = setInterval(stoper, 10);
-        } else creatBoom()
+        } else if (!isBoomMode) {
+            creatBoom()
+        } else boomMode()
+        copyGame()
     }
+    // Regular Click
     if (gBoard[i][j].isShown) return
+    if (gBoard[i][j].minesAroundCount === '') {
+        expandShown(elBtn, i, j)
+        renderBoard(gBoard, '.board-container')
+        return
+    }
+
+    gUndo++
     gBoard[i][j].isShown = true
     elBtn.innerText = gBoard[i][j].minesAroundCount
     if (gBoard[i][j].isMine) {
@@ -146,31 +157,25 @@ function cellClicked(elBtn, i, j) {
     } else {
         elBtn.classList.add('clicked')
         gGame.shownCount++
-        gBoard[i][j].isShown = true
         if (isWin()) {
+            bestScoreLevle()
             clearInterval(gInterval)
             var elMessage = document.querySelector('.end-message');
             elMessage.innerText = 'You win'
             gGame.isOn = false
         }
     }
-
-    var mat = []
-    for (var i = 0; i < gLevel.size; i++) {
-        mat[i] = []
-        for (var j = 0; j < gLevel.size; j++) {
-            mat[i][j] = gBoard[i][j]
-        }
-    }
-    // gUndo++
-    // gBoardCopy[gUndo]= mat.slice()
-    // console.log(gBoardCopy);
+    copyGame()
 }
 
 
 function expandShown(elBtn, i, j) {
     gBoard[i][j].isShown = true
-    if (!gGame.shownCount && !gModelManually) { creatBoom() }
+    if (!gGame.shownCount && !gModelManually) {
+        if (!isBoomMode) {
+            creatBoom()
+        } else boomMode()
+    }
     elBtn.innerText = gBoard[i][j].minesAroundCount
     gGame.shownCount++
     if (!gBoard[i][j].minesAroundCount) {
@@ -209,6 +214,7 @@ function cellMarked(elBtn, i, j) {
         renderCell(i, j, FLAG)
         if (isWin()) {
             clearInterval(gInterval)
+            bestScoreLevle()
             var elMessage = document.querySelector('.end-message');
             elMessage.innerText = 'You win'
             gGame.isOn = false
@@ -233,25 +239,64 @@ function endGame() {
     init()
     var elHint = document.querySelector('.hint');
     elHint.innerText = `🔍X ${gCountHelpHit}`
-    var elTimer = document.querySelector('.btn-level p');
+    var elTimer = document.querySelector('.time');
     elTimer.innerText = '00:00'
 
     var elBtn = document.querySelector('.safe-click');
     elBtn.innerText = `${gSafeClickCount}  Safe Click`
-    console.log('end game');
 }
 
 
-// function backStep() {
-//     // console.log('gBoard',gBoard);
-//     // console.log('gBoardCopy',gBoardCopy);
-//     gBoard = []
-//     gBoard = gBoardCopy.pop()
-//     console.log('gBoard', gBoard);
-//     console.log('gBoardCopy',gBoardCopy);
-//     // console.log('x',x);
-//     // console.log(gBoard);
-//     renderBoard(gBoard, '.board-container')
-// }
+function backStep() {
+    if (!gGame.isOn) return
+    gGame.shownCount--
+    if (gUndo) {
+        gUndo--
+        console.log(gUndo);
+        var board = []
+        var posBoard = gBoardCopy[gUndo]
+        for (var i = 0; i < gLevel.size; i++) {
+            board[i] = []
+            for (var j = 0; j < gLevel.size; j++) {
+                board[i][j] = gBoard[i][j]
+                board[i][j].isShown = false
+                for (var k = 0; k < posBoard.length; k++) {
+                    if (posBoard[k].i === i && posBoard[k].j === j) board[i][j].isShown = true
+                }
+            }
+        }
+        gGame.isOn = posBoard[0].isOn
+        gGame.shownCount = posBoard[0].shownCount
+        gGame.markedCount = posBoard[0].markedCount
+        gLives = posBoard[0].lives
+        gSize = gLevel.mines
+
+        if (posBoard[0].isOn) gInterval = setInterval(stoper, 10)
+    } else {
+        var board = []
+        var posBoard = gBoardCopy[gUndo]
+        for (var i = 0; i < gLevel.size; i++) {
+            board[i] = []
+            for (var j = 0; j < gLevel.size; j++) {
+                board[i][j] = gBoard[i][j]
+                board[i][j].isShown = false
+            }
+        }
+    }
+    renderBoard(board, '.board-container')
+
+}
+
+function copyGame() {
+    var mat = []
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[0].length; j++) {
+            var posCell = { i: i, j: j, isOn: gGame.isOn, shownCount: gGame.shownCount, markedCount: gGame.markedCount, lives: gLives }
+            if (gBoard[i][j].isShown) mat.push(posCell)
+        }
+    }
+    gBoardCopy[gUndo] = mat.slice()
+}
+
 
 

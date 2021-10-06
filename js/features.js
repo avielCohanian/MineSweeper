@@ -1,4 +1,6 @@
 'use strict'
+const MINUTES = 1000 * 60
+const SEC = 1000
 var emoji
 var gTime
 var gLives
@@ -9,21 +11,34 @@ var gSafeClickCount
 var gIsFlickering
 var isManuallyCreate
 var gCreateBooms
-var gModelManually 
+var gModelManually
+var isBoomMode
+var gNow
+var gTimeBestScore
 
 
 function stoper() {
-    var now = ((Date.now() - gTime) / 1000).toFixed(2)
-    var elTimer = document.querySelector('.btn-level p');
-    elTimer.innerText = now
+    var message = ''
+    var now = (Date.now() - gTime)
+    var elTimer = document.querySelector('.time');
+    if (now / 1000 < 60) {
+        message = 'sec';
+        elTimer.innerText = (now / SEC).toFixed(2) + message
+    }
+    if (now / 1000 > 60) {
+        message = 'minutes';
+        elTimer.innerText = (now / MINUTES).toFixed(2) + message
+    }
+    gTimeBestScore = (now / SEC).toFixed(2)
 }
 
 function changeSize(size, mines) {
     gLevel.size = size
     gLevel.mines = mines
     gGame.isOn = true
-    clearInterval(gInterval)
-    init()
+    var score = document.querySelector('.sec-score')
+    score.innerText = localStorage.getItem(`${size}`)
+    endGame()
 }
 
 
@@ -59,7 +74,7 @@ function openNegsHint(elBtn, i, j) {
         for (var j = colIdx - 1; j <= colIdx + 1; j++) {
             // not outside mat
             if (j < 0 || j > gBoard[0].length - 1) continue;
-            // not on selected pos
+            if (gBoard[i][j].isMine && gBoard[i][j].isShown) continue
             var elBtn = document.querySelector(`.cell${i}-${j}`);
             elBtn.classList.add('clicked')
             elBtn.innerText = gBoard[i][j].minesAroundCount
@@ -77,7 +92,7 @@ function closeNegsHint(elBtn, i, j) {
         for (var j = colIdx - 1; j <= colIdx + 1; j++) {
             // not outside mat
             if (j < 0 || j > gBoard[0].length - 1) continue;
-            if (gBoard[i][j].isShown === true) continue
+            if (gBoard[i][j].isShown) continue
             var elBtn = document.querySelector(`.cell${i}-${j}`);
             elBtn.classList.remove('clicked')
             elBtn.innerText = ''
@@ -97,7 +112,6 @@ function safeClick(elBtn) {
     var randPos = getRandomInt(0, emptyCells.length - 1)
     var currEmptyCell = emptyCells[randPos]
     gSafeClickCount--
-    console.log(gSafeClickCount);
     gFlickeringCount = 5
     var elCell = document.querySelector(`.cell${currEmptyCell.i}-${currEmptyCell.j}`);
     elCell.classList.add('safe-click-close')
@@ -128,21 +142,73 @@ function flickering(elCell) {
 
 
 function manuallyCreate(i, j) {
-    console.log(gModelManually);
-    if (gBoard[i][j].isMine)return
+    if (gBoard[i][j].isMine) return
     var elCell = document.querySelector(`.cell${i}-${j}`);
     elCell.classList.add('choose-boom')
     gCreateBooms--
     isManuallyCreate = true
     gBoard[i][j].minesAroundCount = BOOM
     gBoard[i][j].isMine = true
-    gIdxBooms.push({i:i,j:j})
-    
+    gIdxBooms.push({ i: i, j: j })
+
     setMinesNegsCount()
     setTimeout(() => {
         elCell.classList.remove('choose-boom')
     }, 1000);
-    if (!gCreateBooms) isManuallyCreate = false
-    var elMessage = document.querySelector('.end-message');
-    elMessage.innerText = 'Start play'
+    if (!gCreateBooms) {
+        isManuallyCreate = false
+        var elMessage = document.querySelector('.end-message');
+        elMessage.innerText = 'Start play'
+    }
 }
+
+
+
+function boomMode() {
+
+    gIdxBooms = []
+    var emptyCells = getCellsSeven()
+    for (var i = 0; i < emptyCells.length; i++) {
+        var cellIdx = emptyCells[i]
+        gBoard[cellIdx.i][cellIdx.j].minesAroundCount = BOOM
+        gBoard[cellIdx.i][cellIdx.j].isMine = true
+        gIdxBooms.push(cellIdx)
+    }
+    setMinesNegsCount()
+
+}
+
+
+function getCellsSeven() {
+    var emptyCells = []
+    var count = 0
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[0].length; j++) {
+            if (i === 0 && j === 0) {
+                count++
+                continue
+            }
+            if ((count === 7) || (count % 7 === 0) || ((count % 10) === 7)) emptyCells.push({ i: i, j: j })
+            count++
+        }
+    }
+    return emptyCells
+}
+
+
+function bestScoreLevle() {
+    var currLevel = ''
+     currLevel = gLevel.size
+    var currScore = localStorage.getItem(`${currLevel}`)
+    if(!currScore){    
+        localStorage.setItem(`${currLevel}`, `${gTimeBestScore}`);
+    }else{
+        if(currScore> gTimeBestScore)
+        localStorage.setItem(`${currLevel}`, `${gTimeBestScore}`);
+    }   
+    var score = document.querySelector('.sec-score')
+    score.innerText = localStorage.getItem(`${currLevel}`)
+    // localStorage.clear()
+}
+
+

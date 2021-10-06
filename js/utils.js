@@ -2,11 +2,11 @@
 
 
 function buildBoard() {
-    var mat = []
+    var board = []
     for (var i = 0; i < gLevel.size; i++) {
-        mat[i] = []
+        board[i] = []
         for (var j = 0; j < gLevel.size; j++) {
-            mat[i][j] = {
+            board[i][j] = {
                 minesAroundCount: '',
                 isShown: false,
                 isMine: false,
@@ -14,14 +14,14 @@ function buildBoard() {
             }
         }
     }
-    gBoard = mat
+    gBoard = board
     renderBoard(gBoard, '.board-container')
 }
 
 
 function renderBoard(mat, selector) {
-    //המספר זה עובי דפנות התא
-    var strHTML = '<table class="boardGame" border="1"  cellpadding="3"><tbody>';
+    //המספר זה עובי דפנות התא  cellpadding="3"
+    var strHTML = '<table class="boardGame" border="1"  ><tbody>';
     for (var i = 0; i < mat.length; i++) {
         strHTML += '<tr>';
         for (var j = 0; j < mat[0].length; j++) {
@@ -30,12 +30,13 @@ function renderBoard(mat, selector) {
             var show = ''
             if (cell.isMarked) show = FLAG
             if (cell.isShown) {
-                show = cell.minesAroundCount
-                className += ' clicked'
-            }
-            if (cell.isMine && cell.isMarked){
-                show = cell.minesAroundCount
-                className += ' mine'
+                if (cell.isMine) {
+                    show = cell.minesAroundCount
+                    className += ' mine'
+                } else {
+                    show = cell.minesAroundCount
+                    className += ' clicked'
+                }
             }
             strHTML += `<td oncontextmenu ="cellMarked(this,${i},${j})" onclick="cellClicked(this,${i},${j})" class="${className}">${show}  </td>`
         }
@@ -62,7 +63,6 @@ function countNegsBoom(rowIdx, colIdx) {
             // not on selected pos
             if (i === rowIdx && j === colIdx) continue;
             if (gBoard[i][j].minesAroundCount === BOOM) count++;
-            // console.log();
         }
     }
     return count;
@@ -74,7 +74,7 @@ function getEmptyCells() {
     var emptyCells = []
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard[0].length; j++) {
-            if ((!gBoard[i][j].isShown) &&  (!gBoard[i][j].isMine)) {
+            if ((!gBoard[i][j].isShown) && (!gBoard[i][j].isMine)) {
                 emptyCells.push({ i: i, j: j })
             }
         }
