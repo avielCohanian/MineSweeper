@@ -1,172 +1,173 @@
+* {
+  box-sizing: border-box;
+}
+
 ul {
-    list-style: none;
+  list-style: none;
 }
 
 .cell {
-    width: 35px;
-    height: 35px;
-    text-align: center;
-    font-size: 1.5em;
-    background-color: gray;
-
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  font-size: 1.5em;
+  background-color: gray;
 }
 
 table {
-    border-spacing: 2px;
-    border-collapse: initial;
+  border-spacing: 2px;
+  border-collapse: initial;
 }
 
 body {
-
-    background-color: lightgreen
+  min-height: 100vh;
+  margin: 0;
+  background-image: url('./img/bcImg.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-
 .message {
-    text-align: center;
-    font-size: x-large;
-    color: gray;
+  text-align: center;
+  font-size: 40px;
+  color: gray;
+  padding: 10px 0;
+  margin: 0;
 }
 
 .time {
-    color: black;
-    text-align: center;
+  color: rgba(0, 0, 0, 0.712);
+  text-align: center;
+  font-size: 30px;
+  margin: 0;
 }
 
-
 .mine {
-    background-color: red;
+  background-color: red;
 }
 
 .clicked {
-    background-color: rgb(186, 196, 206);
+  background-color: rgb(186, 196, 206);
 }
 
 .board-container {
-    text-align: center;
+  text-align: center;
 }
 
 .score {
-    background-color: wheat;
-    position: absolute;
-    width: 100px;
-    height: 80px;
-    left: 100px;
-    text-align: center;
-    border-radius: 10px;
-    padding-top: 20px;
-    margin-top: 10px;
-
+  background-color: wheat;
+  position: absolute;
+  width: 100px;
+  height: 80px;
+  left: 100px;
+  text-align: center;
+  border-radius: 10px;
+  padding-top: 20px;
+  margin-top: 10px;
+  display: none;
 }
 
 .boardGame {
-    margin: auto;
-    margin-top: 5px;
-    text-align: center;
-    /* background-color: rgba(255, 255, 255, 0.671) */
+  margin: auto;
+  margin-top: 5px;
+  text-align: center;
+  /* background-color: rgba(255, 255, 255, 0.671) */
 }
 
-
 button {
-    cursor: pointer;
-    border-radius: 10px;
-    background-color: lightsalmon;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: lightsalmon;
 }
 
 .btn-level {
-    text-align: center;
-    width: 100px;
-    height: 70px;
-    margin: auto;
-    padding-top: 5px;
-    /* background-color: lightpink; */
-    border-radius: 7px;
+  text-align: center;
+  width: 100px;
+  height: 70px;
+  margin: auto;
+  padding-top: 5px;
+  /* background-color: lightpink; */
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  gap: 30px;
 }
 
 .beginner span {
-    font-size: x-small;
+  font-size: x-small;
 }
 
 .medium {
-    margin-top: 2px;
-
+  margin-top: 2px;
 }
 
 .medium span {
-    font-size: x-small;
+  font-size: x-small;
 }
 
 .expert {
-    margin-top: 2px;
-
+  margin-top: 2px;
 }
 
 .expert span {
-    font-size: x-small;
+  font-size: x-small;
 }
 
 .mode {
-    text-align: center;
-    padding-top: 5px;
+  text-align: center;
+  padding-top: 5px;
 }
 
-
 .boomMode {
-    margin-top: 3px;
+  margin-top: 3px;
 }
 
 .manually-create {
-    margin-top: 3px;
+  margin-top: 3px;
 }
 
 .status-game {
-    text-align: center;
+  text-align: center;
 }
-
 
 .status-game button {
-    background-color: gray;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    border-radius: 10px;
-    /* padding: 0px; */
+  background-color: gray;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  border-radius: 10px;
 }
-
-
 .help {
-    text-align: center;
-    /* width: 150px; */
-    width: 300px;
-    height: 25px;
-    padding-top: 5px;
-    /* background-color: lightpink; */
-    border-radius: 7px;
-    /* margin-left: 180px; */
-    /* margin-bottom: 50px; */
-    margin: auto;
+  text-align: center;
+  width: 300px;
+  height: 25px;
+  padding-top: 5px;
+  border-radius: 7px;
+  margin: auto;
+  display: flex;
+  gap: 10px;
 }
 
 .lives {
-    position: relative
+  position: relative;
 }
 
-
 .safe-click-show {
-    opacity: 1;
+  opacity: 1;
 }
 
 .safe-click-close {
-    opacity: 0.3;
+  opacity: 0.3;
 }
 
 .choose-boom {
-    background-color: lightcoral;
+  background-color: lightcoral;
 }
 
-
 .end-message {
-    text-align: center;
-    font-size: medium;
-    color: black;
-
+  text-align: center;
+  font-size: medium;
+  color: black;
 }
